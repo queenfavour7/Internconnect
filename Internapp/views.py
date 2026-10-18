@@ -9,8 +9,3 @@ def home(request):
 def db_view(request):  
     return render(request, 'db.html')
 
-def navbar_component(request):
-    return render(request, 'navbar.html')
-
-def footer_component(request):
-    return render(request, 'footer.html')
