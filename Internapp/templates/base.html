@@ -1,0 +1,24 @@
+{% load static tailwind_tags %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="vwidth=device-width, initial-scale=1.0">
+    <title>Internconnect</title>
+    {% tailwind_css %}
+</head>
+<body>
+    
+    <header>
+    {% include 'components/navbar.html' %}
+    </header>
+    <main  style="margin: 12px; padding: 3px;">
+        {% block content %}
+
+        {% endblock %}
+    </main>
+    <footer>
+    {% include 'components/footer.html' %}
+    </footer>
+</body>
+</html>

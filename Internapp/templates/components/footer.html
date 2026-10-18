@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <style>
+        
+.site-footer {
+  background: #0b0f17;
+  border-top: 1px solid rgba(255,255,255,.08);
+  color: #f2f4f8;
+  font-family: 'DM Sans', sans-serif;
+}
+
+.footer-main {
+  width: min(1160px, calc(100% - 48px));
+  margin: auto;
+  padding: 54px 0 43px;
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1.25fr;
+  gap: 35px;
+}
+
+.footer-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  font: 800 16px Manrope, sans-serif;
+  letter-spacing: -.4px;
+}
+
+.footer-brand > span:last-child > span {
+  font-weight: 500;
+  color: #9ca7b9;
+}
+
+.footer-brand-mark {
+  width: 30px;
+  height: 30px;
+  display: grid;
+  place-items: center;
+  background: #b7f36b;
+  color: #10170a;
+  border-radius: 8px;
+  font-size: 16px;
+  letter-spacing: -2px;
+}
+
+.footer-brand-mark span { color: #4e6940; }
+
+.footer-brand-block p {
+  font-size: 12px;
+  color: #929daf;
+  line-height: 1.9;
+  max-width: 290px;
+  margin: 18px 0;
+}
+
+.footer-location { font-size: 10px; color: #aeb7c6; }
+.footer-location span { color: #b7f36b; margin-right: 5px; }
+
+.footer-column {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 14px;
+}
+
+.footer-column h3 {
+  font-size: 12px;
+  margin: 5px 0 6px;
+}
+
+.footer-column a {
+  font-size: 11px;
+  color: #9ca7b9;
+  transition: color .2s;
+}
+
+.footer-column a:hover,
+.footer-bottom a:hover { color: #b7f36b; }
+
+.footer-bottom {
+  width: min(1160px, calc(100% - 48px));
+  margin: auto;
+  border-top: 1px solid rgba(255,255,255,.08);
+  min-height: 65px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 18px;
+  font-size: 10px;
+  color: #7f8a9d;
+}
+
+.footer-bottom > div {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+}
+
+.footer-bottom a,
+.back-to-top {
+  font-size: 10px;
+  color: #9ca7b9;
+}
+
+.back-to-top {
+  border: 0;
+  background: none;
+  padding: 0;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.back-to-top:hover { color: #b7f36b; }
+
+@media (max-width: 760px) {
+  .footer-main {
+    grid-template-columns: 1fr 1fr;
+    gap: 30px 20px;
+    padding: 40px 0 30px;
+  }
+
+  .footer-brand-block { grid-column: 1 / -1; }
+
+  .footer-bottom {
+    padding: 18px 0;
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .footer-bottom > div { flex-wrap: wrap; gap: 17px; }
+}
+
+@media (max-width: 420px) {
+  .footer-main,
+  .footer-bottom { width: calc(100% - 32px); }
+
+  .footer-column a { font-size: 10px; }
+}
+
+    </style>
+<footer class="site-footer">
+  <div class="footer-main">
+    <div class="footer-brand-block">
+      <a class="footer-brand" href="index.html">
+        <span class="footer-brand-mark">i<span>c</span></span>
+        <span>intern<span>connect</span></span>
+      </a>
+
+      <p>
+        Helping students across Nigeria connect with internship
+        opportunities, tech hubs, and the experience that moves
+        careers forward.
+      </p>
+
+      <span class="footer-location">
+        <span>◎</span> Made for students across Nigeria
+      </span>
+    </div>
+
+    <div class="footer-column">
+      <h3>Explore</h3>
+      <a href="index.html#how-it-works">How it works</a>
+      <a href="db.html#opportunities">Internships</a>
+      <a href="db.html#hubs">Tech hubs</a>
+    </div>
+
+    <div class="footer-column">
+      <h3>For students</h3>
+      <a href="db.html">Open dashboard</a>
+      <a href="db.html#saved">Saved opportunities</a>
+    </div>
+
+    <div class="footer-column">
+      <h3>Get in touch</h3>
+      <a href="mailto:hello@internconnect.ng">okofavour07@internconnect.ng</a>
+    </div>
+  </div>
+
+  <div class="footer-bottom">
+    <span>
+      © <span id="footer-year">2026</span>
+      InternConnect. Built for the next generation.
+    </span>
+  </div>
+</footer>
+<script>
+    
+(() => {
+  const year = document.getElementById("footer-year");
+
+  if (year) {
+    year.textContent = new Date().getFullYear();
+  }
+
+  const backToTop = document.querySelector(".back-to-top");
+
+  if (backToTop) {
+    backToTop.addEventListener("click", () => {
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+      });
+    });
+  }
+})();
+
+</script>
+</body>
+</html>

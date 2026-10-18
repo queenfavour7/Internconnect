@@ -1,0 +1,644 @@
+{% extends 'base.html' %}
+{% load tailwind_tags %}
+{% load static %}
+{% block "content" %}
+{%tailwind_css%}
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            ink: '#080b12',
+            panel: '#101521',
+            lime: '#b7f36b',
+            softpurple: '#9b8cff'
+          },
+          fontFamily: {
+            sans: ['DM Sans', 'sans-serif'],
+            display: ['Manrope', 'sans-serif']
+          }
+        }
+      }
+    };
+  </script>
+</head>
+
+<body class="min-h-screen bg-ink font-sans text-slate-100 antialiased">
+  <div id="navbar-placeholder"></div>
+
+  <main class="mx-auto w-full max-w-7xl px-4 py-8 sm:px-6 lg:px-8 lg:py-10">
+
+    <!-- Dashboard heading -->
+    <section class="mb-8 flex flex-col justify-between gap-5 md:flex-row md:items-end">
+      <div>
+        <p class="mb-3 flex items-center gap-2 text-[11px] font-bold tracking-[.19em] text-slate-400">
+          <span class="h-2 w-2 rounded-full bg-lime"></span>
+          STUDENT WORKSPACE
+        </p>
+
+        <h1 class="font-display text-3xl font-extrabold tracking-tight sm:text-4xl">
+          Find your next <span class="text-lime">opportunity.</span>
+        </h1>
+
+        <p class="mt-3 max-w-2xl text-sm leading-6 text-slate-400">
+          Explore internship roles and discover tech hubs around Nigeria.
+          Your next experience can start with one connection.
+        </p>
+      </div>
+
+      <div class="flex flex-wrap gap-3">
+        <button id="save-profile"
+          class="rounded-lg border border-slate-700 px-4 py-3 text-xs font-bold text-slate-200 transition hover:border-slate-500">
+          Save my preferences
+        </button>
+
+        <a href="#opportunities"
+          class="rounded-lg bg-lime px-4 py-3 text-xs font-extrabold text-slate-950 transition hover:bg-lime/90">
+          Explore internships 
+        </a>
+      </div>
+    </section>
+
+    <!-- Dashboard summary cards -->
+    <section class="mb-8 grid grid-cols-1 gap-4 sm:grid-cols-3">
+      <article class="rounded-2xl border border-white/[.08] bg-panel p-5">
+        <div class="mb-4 flex items-center justify-between">
+          <span class="text-xs text-slate-400">Opportunity categories</span>
+          <span class="rounded-lg bg-violet-400/10 px-2 py-1 text-violet-300">01</span>
+        </div>
+        <p class="font-display text-2xl font-bold">Tech & digital</p>
+        <p class="mt-2 text-xs text-slate-500">Software, design, data, security</p>
+      </article>
+
+      <article class="rounded-2xl border border-white/[.08] bg-panel p-5">
+        <div class="mb-4 flex items-center justify-between">
+          <span class="text-xs text-slate-400">Location coverage</span>
+          <span class="rounded-lg bg-lime/10 px-2 py-1 text-lime">02</span>
+        </div>
+        <p class="font-display text-2xl font-bold">Across Nigeria</p>
+        <p class="mt-2 text-xs text-slate-500">Search by state or remote option</p>
+      </article>
+
+      <article class="rounded-2xl border border-white/[.08] bg-panel p-5">
+        <div class="mb-4 flex items-center justify-between">
+          <span class="text-xs text-slate-400">Your workspace</span>
+          <span class="rounded-lg bg-sky-400/10 px-2 py-1 text-sky-300">03</span>
+        </div>
+        <p id="saved-count" class="font-display text-2xl font-bold">0 saved</p>
+        <p class="mt-2 text-xs text-slate-500">Keep track of roles you like</p>
+      </article>
+    </section>
+
+    <!-- Internship opportunities -->
+    <section id="opportunities" class="mb-12 scroll-mt-24">
+      <div class="mb-5 flex flex-col justify-between gap-3 sm:flex-row sm:items-end">
+        <div>
+          <p class="mb-2 text-[10px] font-bold tracking-[.18em] text-slate-500">CURATED DISCOVERY</p>
+          <h2 class="font-display text-2xl font-bold">Internship opportunities</h2>
+        </div>
+        <span class="text-xs text-slate-500">
+          Sample listings — verify details with each organisation.
+        </span>
+      </div>
+
+      <!-- Search and filters -->
+      <div class="mb-5 grid grid-cols-1 gap-3 md:grid-cols-4">
+        <label class="md:col-span-2">
+          <span class="mb-2 block text-xs text-slate-400">Search roles</span>
+          <input id="search-input" type="search"
+            placeholder="e.g. frontend, data, design..."
+            class="w-full rounded-xl border border-slate-700 bg-[#0d121c] px-4 py-3 text-sm outline-none transition placeholder:text-slate-600 focus:border-lime">
+        </label>
+
+        <label>
+          <span class="mb-2 block text-xs text-slate-400">State / location</span>
+          <select id="location-filter"
+            class="w-full rounded-xl border border-slate-700 bg-[#0d121c] px-4 py-3 text-sm outline-none focus:border-lime">
+            <option value="">All locations</option>
+            <option>Lagos</option>
+            <option>Abuja</option>
+            <option>Anambra</option>
+            <option>Rivers</option>
+            <option>Remote</option>
+          </select>
+        </label>
+
+        <label>
+          <span class="mb-2 block text-xs text-slate-400">Work style</span>
+          <select id="work-filter"
+            class="w-full rounded-xl border border-slate-700 bg-[#0d121c] px-4 py-3 text-sm outline-none focus:border-lime">
+            <option value="">All work styles</option>
+            <option>Remote</option>
+            <option>Hybrid</option>
+            <option>On-site</option>
+          </select>
+        </label>
+      </div>
+
+      <div id="opportunity-list" class="grid grid-cols-1 gap-4 lg:grid-cols-2"></div>
+
+      <p id="empty-state"
+        class="hidden rounded-xl border border-dashed border-slate-700 p-8 text-center text-sm text-slate-400">
+        No matching opportunities. Try a different search or filter.
+      </p>
+    </section>
+
+    <!-- Tech hubs -->
+    <section id="hubs" class="mb-12 scroll-mt-24">
+      <div class="mb-5">
+        <p class="mb-2 text-[10px] font-bold tracking-[.18em] text-slate-500">EXPLORE YOUR OPTIONS</p>
+        <h2 class="font-display text-2xl font-bold">Tech hubs to explore</h2>
+        <p class="mt-2 text-sm text-slate-400">
+          Examples of Nigerian technology communities and ecosystems.
+          Confirm current programmes and internship openings directly.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <article class="rounded-2xl border border-white/[.08] bg-panel p-5">
+          <span class="mb-4 inline-grid h-10 w-10 place-items-center rounded-xl bg-violet-400/10 text-lg text-violet-300">⌖</span>
+          <h3 class="font-bold">Lagos tech ecosystem</h3>
+          <p class="mt-2 text-sm leading-6 text-slate-400">
+            Explore technology companies, startup communities, product teams,
+            and innovation programmes.
+          </p>
+          <span class="mt-4 inline-block text-xs text-lime">Lagos State</span>
+        </article>
+
+        <article class="rounded-2xl border border-white/[.08] bg-panel p-5">
+          <span class="mb-4 inline-grid h-10 w-10 place-items-center rounded-xl bg-lime/10 text-lg text-lime">⌖</span>
+          <h3 class="font-bold">Abuja tech ecosystem</h3>
+          <p class="mt-2 text-sm leading-6 text-slate-400">
+            Look for software teams, digital skills communities,
+            and technology-focused organisations.
+          </p>
+          <span class="mt-4 inline-block text-xs text-lime">FCT Abuja</span>
+        </article>
+
+        <article class="rounded-2xl border border-white/[.08] bg-panel p-5">
+          <span class="mb-4 inline-grid h-10 w-10 place-items-center rounded-xl bg-sky-400/10 text-lg text-sky-300">⌖</span>
+          <h3 class="font-bold">South-East tech community</h3>
+          <p class="mt-2 text-sm leading-6 text-slate-400">
+            Discover local startups, university innovation groups,
+            and digital communities across the region.
+          </p>
+          <span class="mt-4 inline-block text-xs text-lime">Anambra & nearby states</span>
+        </article>
+      </div>
+    </section>
+
+    <!-- Saved opportunities -->
+    <section id="saved" class="mb-12 scroll-mt-24 rounded-2xl border border-white/[.08] bg-panel p-5 sm:p-7">
+      <div class="flex flex-col justify-between gap-3 sm:flex-row sm:items-center">
+        <div>
+          <p class="mb-2 text-[10px] font-bold tracking-[.18em] text-slate-500">YOUR SHORTLIST</p>
+          <h2 class="font-display text-xl font-bold">Saved opportunities</h2>
+          <p class="mt-2 text-sm text-slate-400">
+            Save roles to revisit them later on this device.
+          </p>
+        </div>
+
+        <button id="clear-saved"
+          class="self-start rounded-lg border border-slate-700 px-3 py-2 text-xs text-slate-300 hover:border-slate-500">
+          Clear saved
+        </button>
+      </div>
+
+      <div id="saved-list" class="mt-5 grid grid-cols-1 gap-3 md:grid-cols-2"></div>
+
+      <p id="saved-empty" class="mt-5 text-sm text-slate-500">
+        You haven't saved any roles yet. Use the bookmark button on an opportunity.
+      </p>
+    </section>
+
+    <!-- Student profile preferences -->
+    <section id="profile" class="scroll-mt-24 rounded-2xl border border-lime/20 bg-gradient-to-br from-lime/[.08] to-transparent p-5 sm:p-7">
+      <div class="grid grid-cols-1 gap-7 md:grid-cols-[1fr_1.2fr] md:items-center">
+        <div>
+          <p class="mb-2 text-[10px] font-bold tracking-[.18em] text-lime">PERSONALISE YOUR SEARCH</p>
+          <h2 class="font-display text-2xl font-bold">Build your student profile.</h2>
+          <p class="mt-3 text-sm leading-6 text-slate-400">
+            Choose your area of interest and preferred location.
+            This demo saves your preferences in your browser; connect it
+            to your Django backend for accounts and permanent storage.
+          </p>
+        </div>
+
+        <form id="profile-form" class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+          <label class="text-xs text-slate-300">
+            Your name
+            <input id="student-name" type="text" placeholder="Enter your name"
+              class="mt-2 w-full rounded-lg border border-slate-700 bg-[#0d121c] px-3 py-3 text-sm outline-none focus:border-lime">
+          </label>
+
+          <label class="text-xs text-slate-300">
+            Area of interest
+            <select id="student-interest"
+              class="mt-2 w-full rounded-lg border border-slate-700 bg-[#0d121c] px-3 py-3 text-sm outline-none focus:border-lime">
+              <option value="">Choose an area</option>
+              <option>Software development</option>
+              <option>UI/UX design</option>
+              <option>Data analysis</option>
+              <option>Cybersecurity</option>
+              <option>Cloud computing</option>
+            </select>
+          </label>
+
+          <label class="text-xs text-slate-300 sm:col-span-2">
+            Preferred state or work style
+            <select id="student-location"
+              class="mt-2 w-full rounded-lg border border-slate-700 bg-[#0d121c] px-3 py-3 text-sm outline-none focus:border-lime">
+              <option value="">No preference</option>
+              <option>Lagos</option>
+              <option>Abuja</option>
+              <option>Anambra</option>
+              <option>Rivers</option>
+              <option>Remote</option>
+            </select>
+          </label>
+
+          <button type="submit"
+            class="rounded-lg bg-lime px-4 py-3 text-sm font-extrabold text-slate-950 transition hover:bg-lime/90 sm:col-span-2">
+            Save profile preferences
+          </button>
+
+          <p id="profile-message" class="hidden text-xs text-lime sm:col-span-2" role="status"></p>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <div id="footer-placeholder"></div>
+</main>
+<script>
+    
+const opportunities = [
+  {
+    id: 1,
+    title: "Frontend Developer Intern",
+    company: "Nova Labs",
+    location: "Lagos",
+    work: "Hybrid",
+    field: "Software development",
+    description: "Support a product team building accessible web interfaces and responsive user experiences.",
+    skills: ["HTML/CSS", "JavaScript", "React"],
+    symbol: "N",
+    tone: "bg-violet-400/10 text-violet-300"
+  },
+  {
+    id: 2,
+    title: "Data Analyst Intern",
+    company: "TechSpring",
+    location: "Abuja",
+    work: "On-site",
+    field: "Data analysis",
+    description: "Help organise datasets, prepare reports, and communicate useful insights to a team.",
+    skills: ["Excel", "SQL", "Python"],
+    symbol: "T",
+    tone: "bg-lime/10 text-lime"
+  },
+  {
+    id: 3,
+    title: "UI/UX Design Intern",
+    company: "Creative Grid",
+    location: "Remote",
+    work: "Remote",
+    field: "UI/UX design",
+    description: "Assist with user research, wireframes, prototypes, and design-system tasks.",
+    skills: ["Figma", "Prototyping", "Research"],
+    symbol: "C",
+    tone: "bg-orange-400/10 text-orange-300"
+  },
+  {
+    id: 4,
+    title: "Junior Cybersecurity Intern",
+    company: "SecureBridge",
+    location: "Rivers",
+    work: "Hybrid",
+    field: "Cybersecurity",
+    description: "Learn security monitoring, documentation, and basic risk-assessment workflows.",
+    skills: ["Networking", "Linux", "Security"],
+    symbol: "S",
+    tone: "bg-sky-400/10 text-sky-300"
+  },
+  {
+    id: 5,
+    title: "Software Engineering Intern",
+    company: "BuildStack",
+    location: "Anambra",
+    work: "On-site",
+    field: "Software development",
+    description: "Work alongside developers on testing, bug fixes, documentation, and small features.",
+    skills: ["Git", "Python", "APIs"],
+    symbol: "B",
+    tone: "bg-pink-400/10 text-pink-300"
+  },
+  {
+    id: 6,
+    title: "Cloud Support Intern",
+    company: "CloudNorth",
+    location: "Remote",
+    work: "Remote",
+    field: "Cloud computing",
+    description: "Assist with cloud documentation, troubleshooting exercises, and infrastructure basics.",
+    skills: ["Linux", "Cloud", "Networking"],
+    symbol: "C",
+    tone: "bg-indigo-400/10 text-indigo-300"
+  }
+];
+
+const storageKeys = {
+  saved: "internconnect_saved_v1",
+  profile: "internconnect_profile_v1"
+};
+
+function getStored(key, fallback) {
+  try {
+    return JSON.parse(localStorage.getItem(key)) ?? fallback;
+  } catch {
+    return fallback;
+  }
+}
+
+let savedIds = getStored(storageKeys.saved, []);
+
+function saveSavedIds() {
+  localStorage.setItem(storageKeys.saved, JSON.stringify(savedIds));
+  renderSaved();
+  updateSavedCount();
+}
+
+// Create an internship card.
+function opportunityCard(item, savedView = false) {
+  const isSaved = savedIds.includes(item.id);
+
+  const card = document.createElement("article");
+  card.className =
+    "flex gap-4 rounded-2xl border border-white/[.08] bg-panel p-4 transition hover:border-slate-600 sm:p-5";
+
+  const icon = document.createElement("div");
+  icon.className =
+    `grid h-11 w-11 shrink-0 place-items-center rounded-xl text-sm font-extrabold ${item.tone}`;
+  icon.textContent = item.symbol;
+
+  const content = document.createElement("div");
+  content.className = "min-w-0 flex-1";
+
+  const heading = document.createElement("div");
+  heading.className = "flex flex-wrap items-start justify-between gap-2";
+
+  const title = document.createElement("h3");
+  title.className = "font-bold leading-5";
+  title.textContent = item.title;
+
+  const saveButton = document.createElement("button");
+  saveButton.type = "button";
+  saveButton.className =
+    "rounded-lg border border-slate-700 px-3 py-2 text-xs text-slate-300 transition hover:border-lime hover:text-lime";
+  saveButton.textContent = isSaved ? "★ Saved" : "☆ Save";
+  saveButton.setAttribute("aria-pressed", String(isSaved));
+
+  saveButton.addEventListener("click", () => {
+    if (isSaved) {
+      savedIds = savedIds.filter(id => id !== item.id);
+    } else {
+      savedIds = [...savedIds, item.id];
+    }
+
+    saveSavedIds();
+    renderOpportunities();
+  });
+
+  heading.append(title, saveButton);
+
+  const company = document.createElement("p");
+  company.className = "mt-1 text-xs text-slate-400";
+  company.textContent = `${item.company} · ${item.location}, Nigeria`;
+
+  const description = document.createElement("p");
+  description.className = "mt-3 text-sm leading-6 text-slate-400";
+  description.textContent = item.description;
+
+  const tags = document.createElement("div");
+  tags.className = "mt-3 flex flex-wrap gap-2";
+
+  [item.work, ...item.skills].forEach(label => {
+    const tag = document.createElement("span");
+    tag.className =
+      "rounded-md bg-slate-800 px-2 py-1 text-[10px] text-slate-300";
+    tag.textContent = label;
+    tags.appendChild(tag);
+  });
+
+  content.append(heading, company, description, tags);
+  card.append(icon, content);
+
+  if (savedView) {
+    card.classList.add("h-fit");
+  }
+
+  return card;
+}
+
+// Search and filter internship listings.
+function renderOpportunities() {
+  const list = document.getElementById("opportunity-list");
+
+  if (!list) return;
+
+  const query = (
+    document.getElementById("search-input")?.value || ""
+  ).trim().toLowerCase();
+
+  const location =
+    document.getElementById("location-filter")?.value || "";
+
+  const work =
+    document.getElementById("work-filter")?.value || "";
+
+  const filtered = opportunities.filter(item => {
+    const searchable =
+      `${item.title} ${item.company} ${item.location} ${item.field} ${item.skills.join(" ")}`
+        .toLowerCase();
+
+    return (
+      searchable.includes(query) &&
+      (!location || item.location === location) &&
+      (!work || item.work === work)
+    );
+  });
+
+  list.replaceChildren(
+    ...filtered.map(item => opportunityCard(item))
+  );
+
+  document
+    .getElementById("empty-state")
+    ?.classList.toggle("hidden", filtered.length > 0);
+}
+
+// Display the student's saved opportunities.
+function renderSaved() {
+  const list = document.getElementById("saved-list");
+
+  if (!list) return;
+
+  const saved = opportunities.filter(item =>
+    savedIds.includes(item.id)
+  );
+
+  list.replaceChildren(
+    ...saved.map(item => opportunityCard(item, true))
+  );
+
+  document
+    .getElementById("saved-empty")
+    ?.classList.toggle("hidden", saved.length > 0);
+}
+
+// Update the saved opportunities counter.
+function updateSavedCount() {
+  const count = document.getElementById("saved-count");
+
+  if (count) {
+    count.textContent = `${savedIds.length} saved`;
+  }
+}
+
+// Load previously saved profile preferences.
+function loadProfile() {
+  const profile = getStored(storageKeys.profile, {});
+
+  const name = document.getElementById("student-name");
+  const interest = document.getElementById("student-interest");
+  const location = document.getElementById("student-location");
+
+  if (name) name.value = profile.name || "";
+  if (interest) interest.value = profile.interest || "";
+  if (location) location.value = profile.location || "";
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  const navbarTarget = document.getElementById("navbar-placeholder");
+  const footerTarget = document.getElementById("footer-placeholder");
+
+  // Load shared navbar and footer components.
+  async function loadComponent(
+    target,
+    htmlFile,
+    cssFile,
+    jsFile,
+    marker
+  ) {
+    if (!target) return;
+
+    try {
+      const response = await fetch(htmlFile);
+
+      if (!response.ok) {
+        throw new Error(`Could not load ${htmlFile}`);
+      }
+
+      target.innerHTML = await response.text();
+
+      if (!document.querySelector(`link[data-component="${marker}"]`)) {
+        const link = document.createElement("link");
+        link.rel = "stylesheet";
+        link.href = cssFile;
+        link.dataset.component = marker;
+        document.head.appendChild(link);
+      }
+
+      if (!document.querySelector(`script[data-component="${marker}"]`)) {
+        const script = document.createElement("script");
+        script.src = jsFile;
+        script.defer = true;
+        script.dataset.component = marker;
+        document.body.appendChild(script);
+      }
+    } catch (error) {
+      console.error(error);
+
+      target.innerHTML = `
+        <p class="p-4 text-sm text-red-300">
+          Shared navigation/footer could not load.
+          Run with a local development server.
+        </p>`;
+    }
+  }
+
+  loadComponent(
+    navbarTarget,
+    "navbar.html",
+    "navbar.css",
+    "navbar.js",
+    "db-navbar"
+  );
+
+  loadComponent(
+    footerTarget,
+    "footer.html",
+    "footer.css",
+    "footer.js",
+    "db-footer"
+  );
+
+  // Activate search and filter controls.
+  ["search-input", "location-filter", "work-filter"].forEach(id => {
+    document.getElementById(id)?.addEventListener(
+      "input",
+      renderOpportunities
+    );
+
+    document.getElementById(id)?.addEventListener(
+      "change",
+      renderOpportunities
+    );
+  });
+
+  // Clear saved internship listings.
+  document.getElementById("clear-saved")?.addEventListener("click", () => {
+    savedIds = [];
+    saveSavedIds();
+    renderOpportunities();
+  });
+
+  // Save student profile preferences in the current browser.
+  document.getElementById("profile-form")?.addEventListener(
+    "submit",
+    event => {
+      event.preventDefault();
+
+      const profile = {
+        name: document.getElementById("student-name").value.trim(),
+        interest: document.getElementById("student-interest").value,
+        location: document.getElementById("student-location").value
+      };
+
+      localStorage.setItem(
+        storageKeys.profile,
+        JSON.stringify(profile)
+      );
+
+      const message = document.getElementById("profile-message");
+
+      message.textContent = "Preferences saved on this device.";
+      message.classList.remove("hidden");
+    }
+  );
+
+  // Scroll to the student profile form.
+  document.getElementById("save-profile")?.addEventListener("click", () => {
+    document.getElementById("profile")?.scrollIntoView({
+      behavior: "smooth"
+    });
+  });
+
+  loadProfile();
+  renderOpportunities();
+  renderSaved();
+  updateSavedCount();
+});
+
+</script>
+{% endblock  %}

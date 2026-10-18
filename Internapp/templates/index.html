@@ -1,0 +1,755 @@
+{% load static %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Internconnect</title>
+</head>
+<body>
+    <style>
+:root {
+  --bg: #080b12;
+  --panel: #101521;
+  --text: #f4f6fb;
+  --muted: #9ca7b9;
+  --line: rgba(255,255,255,.09);
+  --purple: #9b8cff;
+  --green: #b7f36b;
+}
+
+{ box-sizing: border-box; }
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 90px;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'DM Sans', sans-serif;
+}
+
+a { color: inherit; text-decoration: none; }
+
+.section-wrap {
+  width: min(1160px, calc(100% - 48px));
+  margin-inline: auto;
+}
+
+.hero {
+  display: grid;
+  grid-template-columns: 1.03fr .97fr;
+  gap: 55px;
+  align-items: center;
+  padding-top: 85px;
+  padding-bottom: 78px;
+  min-height: 640px;
+}
+
+.eyebrow {
+  font-size: 11px;
+  letter-spacing: 1.7px;
+  font-weight: 700;
+  color: #c5cbd7;
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+}
+
+.status-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--green);
+  box-shadow: 0 0 14px #b7f36b88;
+}
+
+.hero h1,
+.section-heading h2,
+.cta-section h2 {
+  font-family: Manrope, sans-serif;
+  font-size: clamp(42px, 5vw, 67px);
+  line-height: 1.08;
+  letter-spacing: -2.8px;
+  margin: 22px 0 20px;
+  font-weight: 800;
+}
+
+.gradient-text {
+  background: linear-gradient(100deg, #c2b9ff, #8b7aff 50%, #a9f5a2);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+}
+
+.hero-description {
+  font-size: 16px;
+  line-height: 1.8;
+  color: var(--muted);
+  max-width: 490px;
+}
+
+.hero-actions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-top: 29px;
+}
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 17px;
+  padding: 14px 19px;
+  border-radius: 9px;
+  font-size: 13px;
+  font-weight: 700;
+  transition: transform .2s, background .2s;
+}
+
+.button:hover { transform: translateY(-2px); }
+
+.button-primary {
+  background: var(--green);
+  color: #11190c;
+  box-shadow: 0 8px 28px #b7f36b16;
+}
+
+.button-primary:hover { background: #c8ff87; }
+
+.button-quiet {
+  border: 1px solid var(--line);
+  color: #e6eaf2;
+}
+
+.trust-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-top: 35px;
+}
+
+.trust-row p {
+  font-size: 12px;
+  line-height: 1.7;
+  color: var(--muted);
+  margin: 0;
+}
+
+.trust-row strong { color: #edf0f7; }
+
+.avatar-stack { display: flex; padding-left: 4px; }
+
+.avatar-stack span {
+  width: 31px;
+  height: 31px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  border: 2px solid var(--bg);
+  margin-left: -5px;
+  background: #594f85;
+  color: white;
+  font-size: 9px;
+  font-weight: 700;
+}
+
+.avatar-stack span:nth-child(2) { background: #38695e; }
+.avatar-stack span:nth-child(3) { background: #916346; }
+.avatar-stack span:nth-child(4) { background: #242b3b; }
+
+.hero-visual {
+  position: relative;
+  min-width: 0;
+  padding: 20px 0;
+}
+
+.glow {
+  position: absolute;
+  filter: blur(55px);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.glow-one {
+  width: 210px;
+  height: 210px;
+  background: #6d5be83b;
+  top: 30px;
+  right: 30px;
+}
+
+.glow-two {
+  width: 160px;
+  height: 160px;
+  background: #a3ed6a1a;
+  bottom: 10px;
+  left: 5px;
+}
+
+.preview-window {
+  position: relative;
+  border: 1px solid #2a3040;
+  background: #0d111b;
+  border-radius: 17px;
+  overflow: hidden;
+  box-shadow: 0 30px 90px #0008;
+  transform: rotate(1deg);
+}
+
+.window-top {
+  height: 43px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 15px;
+  border-bottom: 1px solid var(--line);
+  color: #687386;
+  font-size: 10px;
+}
+
+.window-dots { display: flex; gap: 5px; }
+.window-dots i {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #444b5b;
+}
+.window-dots i:first-child { background: #ee817c; }
+.window-dots i:nth-child(2) { background: #e9c26d; }
+.window-dots i:nth-child(3) { background: #8ccf91; }
+
+.preview-content { padding: 23px 22px 25px; }
+
+.preview-greeting {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.preview-greeting small {
+  font-size: 8px;
+  letter-spacing: 1.4px;
+  color: #8e99ac;
+}
+
+.preview-greeting h3 {
+  font: 700 23px Manrope;
+  margin: 7px 0 18px;
+}
+
+.mini-profile {
+  height: 35px;
+  width: 35px;
+  display: grid;
+  place-items: center;
+  border-radius: 10px;
+  background: var(--green);
+  color: #18220f;
+  font-size: 11px;
+  font-weight: 800;
+}
+
+.search-preview {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: #151b28;
+  border: 1px solid #252d3d;
+  padding: 12px;
+  border-radius: 8px;
+  color: #778397;
+  font-size: 10px;
+}
+
+.search-preview > span { font-size: 18px; }
+
+.search-preview kbd {
+  margin-left: auto;
+  border: 1px solid #30394a;
+  border-radius: 4px;
+  padding: 3px 5px;
+  font-size: 8px;
+}
+
+.preview-label {
+  display: flex;
+  justify-content: space-between;
+  margin: 23px 0 11px;
+  font-size: 8px;
+  letter-spacing: 1.2px;
+  color: #8c98ab;
+  font-weight: 700;
+}
+
+.preview-label a { color: var(--green); letter-spacing: 0; }
+
+.opportunity-card {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  background: #121825;
+  border: 1px solid #252c3a;
+  border-radius: 9px;
+  padding: 12px;
+  margin-top: 8px;
+}
+
+.company-icon {
+  height: 37px;
+  width: 37px;
+  flex: none;
+  display: grid;
+  place-items: center;
+  border-radius: 10px;
+  font-weight: 800;
+  font-size: 13px;
+}
+
+.icon-purple { background: #51458a; color: #e1dbff; }
+.icon-green { background: #234b40; color: #c2f5d6; }
+.icon-orange { background: #684632; color: #ffe0bd; }
+
+.opportunity-info {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  min-width: 0;
+}
+
+.opportunity-info strong {
+  font-size: 10px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.opportunity-info > span { font-size: 9px; color: #8d99ac; }
+.tags { display: flex; gap: 5px; }
+
+.tags em {
+  font-size: 8px;
+  font-style: normal;
+  color: #b8c1d0;
+  background: #202838;
+  border-radius: 4px;
+  padding: 4px 6px;
+}
+
+.arrow-circle {
+  margin-left: auto;
+  border: 1px solid #30384a;
+  border-radius: 50%;
+  width: 25px;
+  height: 25px;
+  display: grid;
+  place-items: center;
+  font-size: 12px;
+  color: #cbd3e0;
+  flex: none;
+}
+
+.floating-note {
+  position: absolute;
+  right: -20px;
+  bottom: 2px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 13px 15px;
+  background: #151b27;
+  border: 1px solid #333c4b;
+  border-radius: 11px;
+  box-shadow: 0 15px 40px #0006;
+}
+
+.note-check {
+  width: 28px;
+  height: 28px;
+  display: grid;
+  place-items: center;
+  background: var(--green);
+  color: #18220f;
+  border-radius: 8px;
+  font-weight: 900;
+}
+
+.floating-note div { display: flex; flex-direction: column; gap: 4px; }
+.floating-note strong { font-size: 10px; }
+.floating-note small { font-size: 9px; color: var(--muted); }
+
+.stats-strip {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  padding: 25px 0;
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  gap: 20px;
+}
+
+.stats-strip div {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding-left: 25px;
+  border-left: 1px solid var(--line);
+}
+
+.stats-strip div:first-child { border: 0; padding-left: 0; }
+.stats-strip strong { font: 700 21px Manrope; color: #f4f6fb; }
+.stats-strip span { font-size: 11px; color: var(--muted); }
+
+.feature-section { padding-top: 100px; padding-bottom: 100px; }
+
+.section-heading {
+  text-align: center;
+  max-width: 570px;
+  margin: 0 auto 42px;
+}
+
+.section-heading h2 {
+  font-size: 43px;
+  letter-spacing: -1.7px;
+  margin: 16px 0;
+}
+
+.muted-heading { color: #778397; }
+
+.section-heading > p {
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.8;
+}
+
+.feature-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 17px;
+}
+
+.feature-card {
+  background: linear-gradient(145deg, #111724, #0d111a);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 25px;
+  transition: border-color .2s, transform .2s;
+}
+
+.feature-card:hover {
+  border-color: #535d72;
+  transform: translateY(-4px);
+}
+
+.feature-icon {
+  width: 42px;
+  height: 42px;
+  display: grid;
+  place-items: center;
+  border-radius: 12px;
+  font-size: 23px;
+  margin-bottom: 24px;
+}
+
+.purple-icon { background: #30294d; color: #c3baff; }
+.green-icon { background: #243b2b; color: var(--green); }
+.orange-icon { background: #443124; color: #ffbf8c; }
+
+.feature-card h3 { font: 700 17px Manrope; margin: 0 0 12px; }
+
+.feature-card p {
+  font-size: 12px;
+  line-height: 1.8;
+  color: var(--muted);
+  min-height: 65px;
+}
+
+.feature-card > a {
+  display: inline-block;
+  margin-top: 13px;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--green);
+}
+
+.cta-section {
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 30px;
+  padding: 45px 48px;
+  margin-bottom: 90px;
+  border: 1px solid #343b49;
+  border-radius: 18px;
+  background: linear-gradient(110deg, #151c2a, #10151f);
+}
+
+.cta-section > div:first-child { position: relative; z-index: 1; }
+
+.cta-section h2 {
+  font-size: 35px;
+  letter-spacing: -1.3px;
+  margin: 14px 0;
+}
+
+.cta-section p { font-size: 12px; color: var(--muted); line-height: 1.7; }
+
+.cta-section .button { position: relative; z-index: 1; flex: none; }
+
+.cta-orb {
+  position: absolute;
+  width: 240px;
+  height: 240px;
+  border-radius: 50%;
+  background: #9283ff1c;
+  filter: blur(30px);
+  right: 10%;
+  top: -130px;
+}
+
+@media (max-width: 900px) {
+  .hero { grid-template-columns: 1fr; gap: 35px; padding-top: 65px; }
+  .hero-copy { max-width: 650px; }
+  .hero-visual { max-width: 580px; width: 100%; margin: auto; }
+  .floating-note { right: -8px; }
+  .feature-section { padding-top: 75px; padding-bottom: 75px; }
+}
+
+@media (max-width: 620px) {
+  .section-wrap { width: min(100% - 32px, 1160px); }
+  .hero { padding-top: 48px; padding-bottom: 48px; min-height: auto; }
+  .hero h1 { font-size: 43px; letter-spacing: -1.8px; }
+  .hero-description { font-size: 14px; }
+  .button { padding: 13px 14px; }
+  .preview-content { padding: 17px 13px; }
+  .opportunity-card { padding: 9px; gap: 8px; }
+  .opportunity-info strong { font-size: 9px; }
+  .opportunity-info > span { font-size: 8px; }
+  .floating-note { right: 0; bottom: -12px; padding: 10px; }
+  .floating-note small { max-width: 150px; }
+  .stats-strip { grid-template-columns: repeat(2, 1fr); gap: 22px; padding: 22px 0; }
+  .stats-strip div { padding-left: 14px; }
+  .stats-strip div:nth-child(3) { border-left: 0; padding-left: 0; }
+  .stats-strip strong { font-size: 18px; }
+  .feature-section { padding-top: 65px; padding-bottom: 65px; }
+  .section-heading h2 { font-size: 37px; }
+  .feature-grid { grid-template-columns: 1fr; }
+  .feature-card p { min-height: 0; }
+  .cta-section { align-items: flex-start; flex-direction: column; padding: 30px 23px; margin-bottom: 55px; }
+  .cta-section h2 { font-size: 30px; }
+  .cta-section .button { align-self: flex-start; }
+}
+
+    </style>
+        {% include "db.html" %} 
+
+  <div id="navbar-placeholder"></div>
+
+  <main>
+    <section class="hero section-wrap">
+      <div class="hero-copy">
+        <span class="eyebrow"><span class="status-dot"></span> YOUR NEXT CHAPTER STARTS HERE</span>
+        <h1>Turn your skills<br>into <span class="gradient-text">real experience.</span></h1>
+        <p class="hero-description">
+          Discover internship opportunities, explore verified tech hubs,
+          and take your next career step — all in one place.
+        </p>
+        <div class="hero-actions">
+          <a class="button button-primary" href="db.html">
+            Explore opportunities <span>↗</span>
+          </a>
+          <a class="button button-quiet" href="#how-it-works">
+            How it works <span>↓</span>
+          </a>
+        </div>
+        <div class="trust-row">
+          <div class="avatar-stack" aria-hidden="true">
+            <span>AM</span><span>JO</span><span>FK</span><span>+</span>
+          </div>
+          <p><strong>Built for ambitious students</strong><br>
+            <span>Across campus to career</span>
+          </p>
+        </div>
+      </div>
+
+      <div class="hero-visual">
+        <div class="glow glow-one"></div>
+        <div class="glow glow-two"></div>
+        <div class="preview-window">
+          <div class="window-top">
+            <div class="window-dots"><i></i><i></i><i></i></div>
+            <span>internconnect.app</span>
+            <span>•••</span>
+          </div>
+          <div class="preview-content">
+            <div class="preview-greeting">
+              <div>
+                <small>YOUR OPPORTUNITY BOARD</small>
+                <h3>Find your place.</h3>
+              </div>
+              <div class="mini-profile">IC</div>
+            </div>
+            <div class="search-preview">
+              <span>⌕</span> Role, skill, or company <kbd>⌘ K</kbd>
+            </div>
+            <div class="preview-label">
+              FEATURED INTERNSHIPS <a href="db.html">View all ↗</a>
+            </div>
+
+            <article class="opportunity-card">
+              <div class="company-icon icon-purple">N</div>
+              <div class="opportunity-info">
+                <strong>Frontend Developer Intern</strong>
+                <span>Nova Labs · Lagos, Nigeria</span>
+                <div class="tags"><em>Hybrid</em><em>Frontend</em></div>
+              </div>
+              <span class="arrow-circle">↗</span>
+            </article>
+
+            <article class="opportunity-card">
+              <div class="company-icon icon-green">T</div>
+              <div class="opportunity-info">
+                <strong>Data Analyst Intern</strong>
+                <span>TechSpring · Abuja, Nigeria</span>
+                <div class="tags"><em>On-site</em><em>Data</em></div>
+              </div>
+              <span class="arrow-circle">↗</span>
+            </article>
+
+            <article class="opportunity-card">
+              <div class="company-icon icon-orange">C</div>
+              <div class="opportunity-info">
+                <strong>UI/UX Design Intern</strong>
+                <span>Creative Grid · Remote</span>
+                <div class="tags"><em>Remote</em><em>Design</em></div>
+              </div>
+              <span class="arrow-circle">↗</span>
+            </article>
+          </div>
+        </div>
+        <div class="floating-note">
+          <span class="note-check">✓</span>
+          <div>
+            <strong>Your future, in motion</strong>
+            <small>One connection can change everything.</small>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="stats-strip section-wrap">
+      <div><strong>36</strong><span>States to explore</span></div>
+      <div><strong>Tech-first</strong><span>Opportunity discovery</span></div>
+      <div><strong>One place</strong><span>Start your journey</span></div>
+      <div><strong>Made for you</strong><span>Student-friendly tools</span></div>
+    </section>
+
+    <section class="section-wrap feature-section" id="how-it-works">
+      <div class="section-heading">
+        <span class="eyebrow">YOUR CAREER TOOLKIT</span>
+        <h2>Less searching.<br><span class="muted-heading">More growing.</span></h2>
+        <p>Everything you need to take the first step toward meaningful work experience.</p>
+      </div>
+
+      <div class="feature-grid">
+        <article class="feature-card">
+          <div class="feature-icon purple-icon">⌕</div>
+          <h3>Discover opportunities</h3>
+          <p>Explore internship listings by role, skill, work style, and location across Nigeria.</p>
+          <a href="db.html">Browse opportunities ↗</a>
+        </article>
+
+        <article class="feature-card">
+          <div class="feature-icon green-icon">⌖</div>
+          <h3>Find tech hubs</h3>
+          <p>Learn about technology companies and hubs in different states before you apply.</p>
+          <a href="db.html#hubs">Explore tech hubs ↗</a>
+        </article>
+
+        <article class="feature-card">
+          <div class="feature-icon orange-icon">▣</div>
+          <h3>Organise your journey</h3>
+          <p>Save interesting roles and keep track of the opportunities you want to pursue.</p>
+          <a href="db.html#saved">Open your workspace ↗</a>
+        </article>
+      </div>
+    </section>
+
+    <section class="cta-section section-wrap">
+      <div>
+        <span class="eyebrow">YOUR NEXT STEP IS CLOSER</span>
+        <h2>Ready to connect<br>your ambition to opportunity?</h2>
+        <p>Start exploring internships and tech hubs that can help you grow.</p>
+      </div>
+      <a class="button button-primary" href="db.html">Get started <span>↗</span></a>
+      <div class="cta-orb"></div>
+    </section>
+  </main>
+
+  <div id="footer-placeholder"></div>
+
+  <script>
+  
+async function loadSharedComponent(targetId, filePath, cssPath, jsPath) {
+  const target = document.getElementById(targetId);
+  if (!target) return;
+
+  try {
+    const response = await fetch(filePath);
+
+    if (!response.ok) {
+      throw new Error(`Could not load ${filePath}`);
+    }
+
+    target.innerHTML = await response.text();
+
+    if (!document.querySelector(`link[data-component="${targetId}"]`)) {
+      const link = document.createElement("link");
+      link.rel = "stylesheet";
+      link.href = cssPath;
+      link.dataset.component = targetId;
+      document.head.appendChild(link);
+    }
+
+    if (!document.querySelector(`script[data-component="${targetId}"]`)) {
+      const script = document.createElement("script");
+      script.src = jsPath;
+      script.defer = true;
+      script.dataset.component = targetId;
+      document.body.appendChild(script);
+    }
+  } catch (error) {
+    console.error(error);
+    target.innerHTML = `
+      <p class="component-error">
+        This section could not load. Run the project through a local server.
+      </p>`;
+  }
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  loadSharedComponent(
+    "navbar-placeholder",
+    "navbar.html",
+    "navbar.css",
+    "navbar.js"
+  );
+
+  loadSharedComponent(
+    "footer-placeholder",
+    "footer.html",
+    "footer.css",
+    "footer.js"
+  );
+});
+
+  </script>
+</body>
+</html>
+ {% endblock  %}

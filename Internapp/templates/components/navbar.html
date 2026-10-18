@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>InternConnect</title>
+</head>
+<body>
+    <style>
+        
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: rgba(8,11,18,.88);
+  backdrop-filter: blur(18px);
+  border-bottom: 1px solid rgba(255,255,255,.08);
+  font-family: 'DM Sans', sans-serif;
+}
+
+.nav-shell {
+  width: min(1160px, calc(100% - 48px));
+  height: 76px;
+  margin: auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font: 800 17px Manrope, sans-serif;
+  letter-spacing: -.5px;
+  color: #f4f6fb;
+  white-space: nowrap;
+}
+
+.brand-light { font-weight: 500; color: #9ca7b9; }
+
+.brand-mark {
+  width: 31px;
+  height: 31px;
+  display: grid;
+  place-items: center;
+  border-radius: 9px;
+  background: #b7f36b;
+  color: #10170a;
+  font-size: 17px;
+  letter-spacing: -2px;
+}
+
+.brand-mark span { color: #4e6940; }
+
+.nav-links { display: flex; align-items: center; gap: 27px; }
+
+.nav-link, .nav-login {
+  font-size: 12px;
+  color: #a7b0bf;
+  transition: color .2s;
+}
+
+.nav-link:hover, .nav-login:hover { color: #fff; }
+
+.nav-actions { display: flex; align-items: center; gap: 20px; }
+
+.nav-cta {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 11px 14px;
+  background: #b7f36b;
+  color: #11190c;
+  border-radius: 8px;
+  font-size: 11px;
+  font-weight: 800;
+}
+
+.nav-cta:hover { background: #c9ff8b; }
+
+.nav-toggle {
+  display: none;
+  background: transparent;
+  border: 0;
+  padding: 7px;
+  cursor: pointer;
+}
+
+.nav-toggle span {
+  display: block;
+  width: 22px;
+  height: 2px;
+  margin: 4px;
+  background: #f4f6fb;
+  border-radius: 3px;
+}
+
+.component-error { color: #fca5a5; padding: 10px; font-size: 12px; }
+
+@media (max-width: 760px) {
+  .nav-shell {
+    width: calc(100% - 32px);
+    height: 68px;
+    gap: 12px;
+  }
+
+  .nav-toggle { display: block; order: 3; }
+
+  .nav-links {
+    display: none;
+    position: absolute;
+    top: 67px;
+    left: 0;
+    right: 0;
+    padding: 17px 24px 22px;
+    background: #0d111b;
+    border-bottom: 1px solid rgba(255,255,255,.1);
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 20px;
+  }
+
+  .nav-links.is-open { display: flex; }
+  .nav-actions { margin-left: auto; gap: 13px; }
+  .nav-login { display: none; }
+  .nav-cta { padding: 10px 11px; }
+  .brand { font-size: 15px; }
+  .brand-mark { width: 29px; height: 29px; }
+}
+
+    </style>
+
+<header class="site-header">
+  <nav class="nav-shell" aria-label="Main navigation">
+    <a class="brand" href="index.html" aria-label="InternConnect home">
+      <span class="brand-mark">i<span>c</span></span>
+      <span>intern<span class="brand-light">connect</span></span>
+    </a>
+
+    <button class="nav-toggle" type="button"
+      aria-label="Open navigation menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+
+    <div class="nav-links">
+      <a class="nav-link" href="index.html#how-it-works">How it works</a>
+      <a class="nav-link" href="db.html#opportunities">Opportunities</a>
+      <a class="nav-link" href="db.html#hubs">Tech hubs</a>
+    </div>
+
+    <div class="nav-actions">
+      <a class="nav-login" href="db.html">Log in</a>
+      <a class="nav-cta" href="db.html">Get started <span>↗</span></a>
+    </div>
+  </nav>
+</header>
+<script>
+    
+(() => {
+  const header = document.querySelector(".site-header");
+
+  if (!header || header.dataset.ready === "true") return;
+  header.dataset.ready = "true";
+
+  const toggle = header.querySelector(".nav-toggle");
+  const links = header.querySelector(".nav-links");
+
+  if (!toggle || !links) return;
+
+  toggle.addEventListener("click", () => {
+    const isOpen = links.classList.toggle("is-open");
+
+    toggle.setAttribute("aria-expanded", String(isOpen));
+    toggle.setAttribute(
+      "aria-label",
+      isOpen ? "Close navigation menu" : "Open navigation menu"
+    );
+  });
+
+  links.querySelectorAll("a").forEach(link => {
+    link.addEventListener("click", () => {
+      links.classList.remove("is-open");
+      toggle.setAttribute("aria-expanded", "false");
+    });
+  });
+})();
+
+</script>
+</body>
+</html>
